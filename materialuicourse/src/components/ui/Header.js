@@ -8,6 +8,8 @@ import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 function ElevationScroll(props) {
     const { children } = props;
@@ -49,6 +51,18 @@ const useStyles = makeStyles(theme => ({
         "&:hover": {
             backgroundColor: "transparent"
         }
+    },
+    menu: {
+        backgroundColor: theme.palette.primary.main,
+        color: "white",
+        borderRadius: 0
+    },
+    menuItem: {
+        ...theme.typography.tab,
+        opacity: 0.7,
+        "&:hover": {
+            opacity: 1
+        }
     }
 }))
 
@@ -56,9 +70,31 @@ const useStyles = makeStyles(theme => ({
 export default function Header(props) {
     const classes = useStyles()
     const [value, setValue] = useState(0);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [open, setOpen] = useState(false);
+    const [selectedIndex, setSelectedIndex] = useState(0);
+
     const handleChange = (e, value) => {
         setValue(value)
-    }
+    };
+
+    const handleClick = (e) => {
+        setAnchorEl(e.currentTarget)
+        setOpen(true)
+    };
+
+    const handleMenuItemClick = (e, i) => {
+        setAnchorEl(null)
+        setOpen(false)
+        setSelectedIndex(i)
+    };
+
+    const handleClose = (e) => {
+        setAnchorEl(null)
+        setOpen(false)
+    };
+
+    const menuOptions = [{ name="Services", link="/services" }, { name="Custom Software Development", link="/customsoftware" }, { name="Mobile App Development", link="/mobileapps" }, { name="Website Development", link="/websites" }]
 
     useEffect(() => {
         if (window.location.pathname === '/' && value !== 0) {
@@ -86,7 +122,7 @@ export default function Header(props) {
                         </Button>
                         <Tabs value={value} onChange={handleChange} className={classes.tabContainer} indicatorColor="primary">
                             <Tab className={classes.tab} component={Link} to="/" label="Home" />
-                            <Tab className={classes.tab} component={Link} to="/services" label="Services" />
+                            <Tab aria-owns={anchorEl ? "simple-menu" : undefined} aria-haspopup={anchorEl ? "true" : undefined} className={classes.tab} component={Link} onMouseOver={event => handleClick(event)} to="/services" label="Services" />
                             <Tab className={classes.tab} component={Link} to="/revolution" label="The Revolution" />
                             <Tab className={classes.tab} component={Link} to="/about" label="About Us" />
                             <Tab className={classes.tab} component={Link} to="/contact" label="Contact Us" />
@@ -94,6 +130,13 @@ export default function Header(props) {
                         <Button variant="contained" color="secondary" className={classes.button}>
                             Free Estimate
                         </Button>
+                        <Menu id="simple-menu" anchorEl={anchorEl} open={open} onClose={handleClose} classes={{ paper: classes.menu }} MenuListProps={{ onMouseLeave: handleClose }} elevation={0}>
+                            {menuOptions.map((option, i) => (
+                                <MenuItem key={option} component={Link} to={option.link}>
+                                    {option.name} classes={{ root: classes.menuItem }} onClick={(event) => { handleMenuItemClick(event, i); setValue(1); handleClose() }} selected={i === selectedIndex && value === 1}
+                                </MenuItem>
+                            ))}
+                        </Menu>
                     </Toolbar>
                 </AppBar>
             </ElevationScroll>
