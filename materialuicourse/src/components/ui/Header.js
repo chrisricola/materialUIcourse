@@ -16,7 +16,7 @@ import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from "@material-ui/core/IconButton";
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
+// import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { List } from '@material-ui/core';
 
@@ -124,13 +124,13 @@ export default function Header(props) {
     const matches = useMediaQuery(theme.breakpoints.down("md"));
 
     const [openDrawer, setOpenDrawer] = useState(false);
-    const [value, setValue] = useState(0);
+
     const [anchorEl, setAnchorEl] = useState(null);
     const [openMenu, setOpenMenu] = useState(false);
-    const [selectedIndex, setSelectedIndex] = useState(0);
+
 
     const handleChange = (e, newValue) => {
-        setValue(newValue)
+        props.setValue(newValue)
     };
 
     const handleClick = (e) => {
@@ -141,7 +141,7 @@ export default function Header(props) {
     const handleMenuItemClick = (e, i) => {
         setAnchorEl(null)
         setOpenMenu(false)
-        setSelectedIndex(i)
+        props.setSelectedIndex(i)
     };
 
     const handleClose = (e) => {
@@ -157,10 +157,10 @@ export default function Header(props) {
         [...menuOptions, ...routes].forEach(route => {
             switch (window.location.pathname) {
                 case `${route.link}`:
-                    if (value !== route.activeIndex) {
-                        setValue(route.activeIndex)
-                        if (route.selectedIndex && route.selectedIndex !== selectedIndex) {
-                            setSelectedIndex(route.selectedIndex)
+                    if (props.value !== route.activeIndex) {
+                        props.setValue(route.activeIndex)
+                        if (route.selectedIndex && route.selectedIndex !== props.selectedIndex) {
+                            props.setSelectedIndex(route.selectedIndex)
                         }
                     }
                     break;
@@ -169,11 +169,11 @@ export default function Header(props) {
             }
         })
 
-    }, [value, menuOptions, selectedIndex, routes])
+    }, [props.value, menuOptions, props.selectedIndex, routes, props])
 
     const tabs = (
         <React.Fragment>
-            <Tabs value={value} onChange={handleChange} className={classes.tabContainer} indicatorColor="primary">
+            <Tabs value={props.value} onChange={handleChange} className={classes.tabContainer} indicatorColor="primary">
                 {routes.map((route, index) => (
                     <Tab key={`${route} ${index}`} className={classes.tab} component={Link} to={route.link} label={route.name} aria-owns={route.ariaOwns} aria-haspopup={route.ariaPopup} onMouseOver={route.mouseOver} />
                 ))}
@@ -183,7 +183,7 @@ export default function Header(props) {
             </Button>
             <Menu id="simple-menu" anchorEl={anchorEl} open={openMenu} onClose={handleClose} classes={{ paper: classes.menu }} MenuListProps={{ onMouseLeave: handleClose }} elevation={0} style={{ zIndex: 1302 }} keepMounted>
                 {menuOptions.map((option, i) => (
-                    <MenuItem key={`${option}${i}`} component={Link} to={option.link} classes={{ root: classes.menuItem }} onClick={(event) => { handleMenuItemClick(event, i); setValue(1); handleClose() }} selected={i === selectedIndex && value === 1}>
+                    <MenuItem key={`${option}${i}`} component={Link} to={option.link} classes={{ root: classes.menuItem }} onClick={(event) => { handleMenuItemClick(event, i); props.setValue(1); handleClose() }} selected={i === props.selectedIndex && props.value === 1}>
                         {option.name}
                     </MenuItem>
                 ))}
@@ -197,16 +197,16 @@ export default function Header(props) {
                 <div className={classes.toolbarMargin} />
                 <List disablePadding>
                     {routes.map(route => (
-                        <ListItem divider key={`${route} ${route.activeIndex}`} button component={Link} to={route.link} selected={value === route.activeIndex} classes={{ selected: classes.drawerItemSelected }} onClick={() => {
+                        <ListItem divider key={`${route} ${route.activeIndex}`} button component={Link} to={route.link} selected={props.value === route.activeIndex} classes={{ selected: classes.drawerItemSelected }} onClick={() => {
                             setOpenDrawer(false);
-                            setValue(route.activeIndex)
+                            props.setValue(route.activeIndex)
                         }}>
                             <ListItemText className={classes.drawerItem} disableTypography>
                                 {route.name}
                             </ListItemText>
                         </ListItem>
                     ))}
-                    <ListItem onClick={() => { setOpenDrawer(false); setValue(5) }} divider button component={Link} classes={{ root: classes.drawerItemEstimate, selected: classes.drawerItemSelected }} to="/estimate" selected={value === 5}>
+                    <ListItem onClick={() => { setOpenDrawer(false); props.setValue(5) }} divider button component={Link} classes={{ root: classes.drawerItemEstimate, selected: classes.drawerItemSelected }} to="/estimate" selected={props.value === 5}>
                         <ListItemText className={classes.drawerItem} disableTypography>Free Estimate</ListItemText>
                     </ListItem>
                 </List>
@@ -222,7 +222,7 @@ export default function Header(props) {
             <ElevationScroll>
                 <AppBar position="fixed" color="primary" className={classes.appBar}>
                     <Toolbar disableGutters>
-                        <Button component={Link} to="/" onClick={(() => setValue(0))} className={classes.logoContainer} disableRipple>
+                        <Button component={Link} to="/" onClick={(() => props.setValue(0))} className={classes.logoContainer} disableRipple>
                             <img alt="Company logo" className={classes.logo} src={logo} />
                         </Button>
                         {matches ? drawer : tabs}
