@@ -167,6 +167,8 @@ export default function Header(props) {
                         }
                     }
                     break;
+                case '/estimate': props.setValue(5);
+                    break;
                 default:
                     break;
             }
@@ -181,7 +183,7 @@ export default function Header(props) {
                     <Tab key={`${route} ${index}`} className={classes.tab} component={Link} to={route.link} label={route.name} aria-owns={route.ariaOwns} aria-haspopup={route.ariaPopup} onMouseOver={route.mouseOver} />
                 ))}
             </Tabs>
-            <Button variant="contained" color="secondary" className={classes.button}>
+            <Button component={Link} to="/estimate" variant="contained" color="secondary" className={classes.button} onClick={() => props.setValue(5)}>
                 Free Estimate
             </Button>
             <Menu id="simple-menu" anchorEl={anchorEl} open={openMenu} onClose={handleClose} classes={{ paper: classes.menu }} MenuListProps={{ onMouseLeave: handleClose }} elevation={0} style={{ zIndex: 1302 }} keepMounted>

@@ -7,6 +7,7 @@ import ButtonArrow from "./ButtonArrow";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import background from "../../assets/background.jpg";
 import mobileBackground from "../../assets/mobileBackground.jpg";
+import { Link } from 'react-router-dom';
 
 
 const useStyles = makeStyles(theme => ({
@@ -41,6 +42,9 @@ const useStyles = makeStyles(theme => ({
         fontSize: "1.5rem",
         marginRight: "5em",
         marginLeft: "2em",
+        "&:hover": {
+            backgroundColor: theme.palette.secondary.light
+        },
         [theme.breakpoints.down("sm")]: {
             marginLeft: 0,
             marginRight: 0
@@ -48,7 +52,7 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-export default function CallToAction() {
+export default function CallToAction(props) {
     const classes = useStyles();
     const theme = useTheme();
     const matchesSM = useMediaQuery(theme.breakpoints.down("sm"))
@@ -66,7 +70,7 @@ export default function CallToAction() {
                             Take advanage of the 21st century.
                         </Typography>
                         <Grid container justify={matchesSM ? "center" : undefined} item>
-                            <Button variant="outlined" className={classes.learnButton}>
+                            <Button component={Link} to="/revolution" variant="outlined" className={classes.learnButton} onClick={() => props.setValue(2)}>
                                 <span style={{ marginRight: 5 }}>Yerr More</span>
                                 <ButtonArrow width={10} height={10} fill={theme.palette.common.blue} />
                             </Button>
@@ -75,7 +79,7 @@ export default function CallToAction() {
                 </Grid>
             </Grid>
             <Grid item>
-                <Button variant="contained" className={classes.estimateButton}>Free Estimate</Button>
+                <Button component={Link} to="/estimate" variant="contained" className={classes.estimateButton} onClick={() => props.setValue(5)}>Free Estimate</Button>
             </Grid>
         </Grid>
     )

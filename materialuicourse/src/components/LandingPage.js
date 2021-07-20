@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
+import { Link } from "react-router-dom";
 
 import CallToAction from "../components/ui/CallToAction";
 
@@ -126,7 +127,7 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-export default function LandingPage() {
+export default function LandingPage(props) {
     const classes = useStyles();
     const theme = useTheme();
     const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
@@ -149,10 +150,10 @@ export default function LandingPage() {
                         <Typography variant="h2" align="center">Yerr Sirski Coast Tech<br /> Some Tech Shiz</Typography>
                         <Grid container justify="center" className={classes.buttonContainer}>
                             <Grid item>
-                                <Button className={classes.estimateButton} variant="contained">Free Yerrestimate</Button>
+                                <Button component={Link} to="/estimate" className={classes.estimateButton} variant="contained" onClick={() => props.setValue(5)}>Free Yerrestimate</Button>
                             </Grid>
                             <Grid item>
-                                <Button variant="outlined" className={classes.learnButtonHero}>
+                                <Button component={Link} to="/revolution" variant="outlined" className={classes.learnButtonHero} onClick={() => props.setValue(2)}>
                                     <span style={{ marginRight: 10 }}>Yerr More</span>
                                     <ButtonArrow width={15} height={15} fill={theme.palette.common.blue} />
                                 </Button>
@@ -177,7 +178,7 @@ export default function LandingPage() {
                             Complete Yeegital solutions, from Yeevestigations to{" "}
                             <span className={classes.specialText}>Yolobration</span>
                         </Typography>
-                        <Button variant="outlined" className={classes.learnButton}>
+                        <Button component={Link} to="/customsoftware" variant="outlined" className={classes.learnButton} onClick={() => { props.setValue(1); props.setSelectedIndex(1) }}>
                             <span style={{ marginRight: 10 }}>Yerr More</span>
                             <ButtonArrow width={10} height={10} fill={theme.palette.common.blue} />
                         </Button>
@@ -200,7 +201,7 @@ export default function LandingPage() {
                             Yertegrate yerr Web experience or create a Yerrmalone app
                             {matchesSM ? null : <br />} with either mobile yacform.
                         </Typography>
-                        <Button variant="outlined" className={classes.learnButton}>
+                        <Button component={Link} to="/mobileapps" variant="outlined" className={classes.learnButton} onClick={() => { props.setValue(1); props.setSelectedIndex(2) }}>
                             <span style={{ marginRight: 10 }}>Yerr More</span>
                             <ButtonArrow width={10} height={10} fill={theme.palette.common.blue} />
                         </Button>
@@ -222,7 +223,7 @@ export default function LandingPage() {
                         <Typography variant="subtitle1">
                             Yerrtimized for Yerrch Yengines, built for speed.
                         </Typography>
-                        <Button variant="outlined" className={classes.learnButton}>
+                        <Button component={Link} to="/websites" variant="outlined" className={classes.learnButton} onClick={() => { props.setValue(1); props.setSelectedIndex(3) }}>
                             <span style={{ marginRight: 10 }}>Yerr More</span>
                             <ButtonArrow width={10} height={10} fill={theme.palette.common.blue} />
                         </Button>
@@ -247,7 +248,7 @@ export default function LandingPage() {
                                         Visionary insights coupled with cutting-edge technology is a
                                         recipe for revolution.
                                     </Typography>
-                                    <Button variant="outlined" className={classes.learnButton}>
+                                    <Button component={Link} to="/revolution" variant="outlined" className={classes.learnButton} onClick={() => props.setValue(2)}>
                                         <span style={{ marginRight: 10 }}>Yerr More</span>
                                         <ButtonArrow width={10} height={10} fill={theme.palette.common.blue} />
                                     </Button>
@@ -260,10 +261,10 @@ export default function LandingPage() {
             </Grid>
             <Grid item>
                 {/*-----Info Block-----*/}
-                <Grid container style={{ height: "80em" }} alignItems="center" direction="row" spacing={matchesXS ? 10 : 0}>
-                    <Grid item container style={{ position: "absolute", textAlign: matchesXS ? "center" : "inherit" }} direction={matchesXS ? "column" : "row"}>
+                <Grid container style={{ height: "80em" }} alignItems="center" direction="row" className={classes.infoBackground}>
+                    <Grid item container style={{ textAlign: matchesXS ? "center" : "inherit" }} direction={matchesXS ? "column" : "row"}>
                         <Grid item sm style={{ marginLeft: matchesXS ? 0 : matchesSM ? "2em" : "5em" }}>
-                            <Grid container direction="column">
+                            <Grid container style={{ marginBottom: matchesXS ? "10em" : 0 }} direction="column">
                                 <Typography variant="h2" style={{ color: "white" }}>
                                     About Us
                                 </Typography>
@@ -271,7 +272,7 @@ export default function LandingPage() {
                                     Let's get personal.
                                 </Typography>
                                 <Grid item>
-                                    <Button variant="outlined" style={{ color: "white", borderColor: "white" }} className={classes.learnButton}>
+                                    <Button component={Link} to="/about" variant="outlined" style={{ color: "white", borderColor: "white" }} className={classes.learnButton} onClick={() => props.setValue(3)}>
                                         <span style={{ marginRight: 10 }}>Yerr More</span>
                                         <ButtonArrow width={10} height={10} fill="white" />
                                     </Button>
@@ -287,7 +288,7 @@ export default function LandingPage() {
                                     Say Hello! <span role="img" aria-label="yerr">🤙</span>
                                 </Typography>
                                 <Grid item>
-                                    <Button variant="outlined" style={{ color: "white", borderColor: "white" }} className={classes.learnButton}>
+                                    <Button component={Link} to="/contact" variant="outlined" style={{ color: "white", borderColor: "white" }} className={classes.learnButton} onClick={() => props.setValue(4)}>
                                         <span style={{ marginRight: 10 }}>Yerr More</span>
                                         <ButtonArrow width={10} height={10} fill="white" />
                                     </Button>
@@ -295,12 +296,11 @@ export default function LandingPage() {
                             </Grid>
                         </Grid>
                     </Grid>
-                    <div className={classes.infoBackground} />
                 </Grid>
             </Grid>
             <Grid item>
                 {/*-----Call to Action Block-----*/}
-                <CallToAction></CallToAction>
+                <CallToAction setValue={props.setValue}></CallToAction>
             </Grid>
         </Grid >
     );
